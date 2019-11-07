@@ -5,13 +5,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.app.memo.service.MemoService;
 import me.app.memo.vo.MemoVO;
@@ -44,15 +49,27 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value="/memoList.do", method = RequestMethod.GET)
-	public String getMemoList(Model model) throws Exception {
-		List<MemoVO> list = memoService.selectMemoList();
-		
-		logger.info(list.toString());
-		
-		model.addAttribute("memoList", list);
-		
-		return "memoList";
+	@RequestMapping(value="/memos", method = RequestMethod.GET)
+	public @ResponseBody List<MemoVO> selectMemoList(HttpServletRequest request) throws Exception {			
+		return memoService.selectMemoList();
 	}
 	
+	@RequestMapping(value="/memo/{memoId}", method = RequestMethod.GET)
+	public @ResponseBody MemoVO selectMemo(@PathVariable Integer memoId) throws Exception {
+		return memoService.selectMemo(memoId);
+	}
+	
+	@RequestMapping(value="/memo", method=RequestMethod.POST)
+	public  @ResponseBody int insertMemo(@RequestBody MemoVO memoVO) throws Exception {
+		MemoVO memo = new MemoVO();
+		memo.setMemoId(memoVO.getMemoId());
+		memo.setTitle(memoVO.getTitle());
+		memo.setContent(memoVO.getContent());
+		return memoService.insertMemo(memo);
+	}
+	
+	@RequestMapping(value="/memo/{memoId}", method=RequestMethod.DELETE)
+	public @ResponseBody int deleteMemo(@PathVariable Integer memoId) throws Exception {
+		return memoService.deleteMemo(memoId);
+	}
 }

@@ -2,6 +2,7 @@ package me.app.memo.serviceImpl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,21 @@ public class MemoServiceImpl implements MemoService {
 	@Override
 	public List<MemoVO> selectMemoList() throws Exception {
 		return memoDAO.selectMemoList();
+	}
+
+	@Override
+	public MemoVO selectMemo(Integer memoId) throws Exception {
+		return memoDAO.selectMemo(memoId);
+	}
+
+	@Override
+	public int insertMemo(MemoVO memo) throws Exception {
+		return memoDAO.insertMemo(memo);
+	}
+
+	@Override
+	public int deleteMemo(Integer memoId) throws Exception {
+		return memoDAO.deleteMemo(memoId);
 	}
 	
 }

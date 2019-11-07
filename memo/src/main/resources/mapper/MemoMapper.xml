@@ -11,5 +11,22 @@
 	FROM
 		MEMO
 </select>
-
+<select id="selectMemo" resultType="MemoVO">
+	SELECT
+		MEMOID,
+		TITLE,
+		CONTENT
+	FROM MEMO
+	WHERE MEMOID=#{memoId}
+</select>
+<insert id="insertMemo" parameterType="MemoVO">
+	INSERT
+	INTO MEMO (MEMOID, TITLE, CONTENT)
+	VALUES (#{item.memoId}, #{item.title}, #{item.content})
+</insert>
+<delete id="deleteMemo" >
+	DELETE
+	FROM MEMO
+	WHERE MEMOID=#{memoId}
+</delete>
 </mapper>
